@@ -1,168 +1,68 @@
-# 🏗️ Dashboard Integrado de Gestão - JL Construtora
+### Dashboard JL Construtora
 
-Sistema completo de gestão empresarial desenvolvido especificamente para a JL Construtora, integrando módulos de RH, Segurança e Obras em uma única plataforma moderna e intuitiva.
+Dashboard corporativo para acompanhamento de KPIs das áreas de RH, Segurança e Obras.
 
-## 🎯 **Objetivo do Projeto**
+- **Stack**: Vite + React 19, Tailwind CSS 4, Radix UI, Recharts, React Router (planejado), lucide-react, zod, react-hook-form, date-fns
+- **Gerenciador de pacotes**: pnpm
 
-Demonstrar o potencial de digitalização e automação na JL Construtora através de um sistema que:
-- Centraliza informações críticas em tempo real
-- Automatiza relatórios e indicadores
-- Reduz custos operacionais em até R$ 1.3M/ano
-- Melhora a tomada de decisões estratégicas
+### Status e andamento
+- [x] Planejamento do MVP-Final (`docs/planejamento.md`)
+- [x] Documentação base (arquitetura, execução, relatórios, configs, auth, design)
+- [x] UI base com `Sidebar` e módulos iniciais (Dashboard, RH, Segurança, Obras)
+- [ ] Relatórios com filtros (período/área), KPIs e séries históricas
+- [ ] Exportação CSV e PDF
+- [ ] Configurações persistentes (metas/limiares/identidade)
+- [ ] Autenticação (login simples + rotas protegidas)
+- [ ] Deploy (Vercel/Netlify) e README final
 
-## 🚀 **Funcionalidades Principais**
-
-### 📊 **Dashboard Geral**
-- Visão consolidada de todos os indicadores
-- KPIs em tempo real com tendências
-- Sistema de alertas por categoria
-- Última atualização automática
-
-### 👥 **Módulo de Recursos Humanos**
-- Gestão de 487 funcionários
-- Controle de rotatividade (15% atual vs 12% meta)
-- Monitoramento de horas extras (2.840h/mês)
-- Análise por departamento
-- Indicadores de absenteísmo e satisfação
-
-### 🛡️ **Módulo de Segurança do Trabalho**
-- Controle de acidentes (3/mês vs 15 meta)
-- Gestão de EPIs (98% conformidade)
-- Dias sem acidentes (45 dias atual)
-- Treinamentos de segurança
-- Alertas de vencimento de equipamentos
-
-### 🏗️ **Módulo de Gestão de Obras**
-- Acompanhamento de 12 projetos ativos
-- 85% das obras no prazo
-- Controle de orçamento e recursos
-- Status detalhado por projeto
-- Histórico de conclusões
-
-## 💰 **Impacto Financeiro Esperado**
-
-### **Custos Atuais Identificados:**
-- Folha de pagamento: R$ 2.850.000/ano
-- Acidentes de trabalho: R$ 180.000/ano
-- Horas extras: R$ 1.500.000/ano
-- Atrasos em obras: R$ 320.000/ano
-- **Total de perdas**: R$ 4.850.000/ano
-
-### **Economia Projetada:**
-- Redução de 20% na rotatividade: R$ 570.000/ano
-- Diminuição de 50% nos acidentes: R$ 90.000/ano
-- Otimização de 15% nas horas extras: R$ 225.000/ano
-- Redução de 30% nos atrasos: R$ 96.000/ano
-- Melhoria na produtividade: R$ 319.000/ano
-- **Total de economia**: R$ 1.300.000/ano
-
-### **ROI Projetado:**
-- Investimento inicial: R$ 250.000
-- Economia anual: R$ 1.300.000
-- **ROI**: 420% no primeiro ano
-
-## 🛠️ **Tecnologias Utilizadas**
-
-### **Frontend:**
-- **React 18** - Framework principal
-- **Vite** - Build tool moderna
-- **Tailwind CSS** - Estilização responsiva
-- **Recharts** - Gráficos interativos
-- **Lucide React** - Ícones modernos
-
-### **Características Técnicas:**
-- **Responsivo** - Funciona em desktop, tablet e mobile
-- **Performance otimizada** - Build de 659KB minificado
-- **Dados realistas** - Baseados em empresas reais do setor
-- **Interface intuitiva** - Navegação por sidebar colapsável
-
-## 📈 **Indicadores Monitorados**
-
-### **RH:**
-- Total de funcionários: 487
-- Funcionários ativos: 465
-- Rotatividade mensal: 15%
-- Horas extras: 2.840h/mês
-
-### **Segurança:**
-- Acidentes no mês: 3
-- Dias sem acidentes: 45
-- Conformidade EPIs: 98%
-- Treinamentos pendentes: 12
-
-### **Obras:**
-- Projetos ativos: 12
-- Em andamento: 8
-- Concluídas no mês: 3
-- Atrasadas: 1
-
-## 🚀 **Como Executar**
-
-### **Desenvolvimento:**
+### Como rodar
 ```bash
-cd dashboard-jl-construtora
-pnpm install
-pnpm run dev
+pnpm i
+pnpm dev
+```
+Abrirá em `http://localhost:5173`.
+
+Build e preview:
+```bash
+pnpm build
+pnpm preview
 ```
 
-### **Produção:**
+Lint:
 ```bash
-pnpm run build
-pnpm run preview
+pnpm lint
 ```
 
-## 📱 **Navegação do Sistema**
+### Estrutura (resumo)
+- `src/App.jsx`: layout principal e controle da seção ativa
+- `src/components/Sidebar.jsx`: navegação lateral
+- `src/components/*Module.jsx`: módulos de áreas
+- `src/components/ui/*`: componentes UI
+- `src/data/mockData.js`: dados mock
 
-1. **Dashboard** - Visão geral consolidada
-2. **Recursos Humanos** - Gestão de funcionários
-3. **Segurança** - Controle de acidentes e EPIs
-4. **Obras** - Acompanhamento de projetos
-5. **Relatórios** - (Em desenvolvimento)
-6. **Configurações** - (Em desenvolvimento)
+Estrutura proposta para o MVP (ver detalhes em `docs/arquitetura.md`):
+- `src/services/`: `kpiService`, `reportService`, `exportService`, `authService`
+- `src/data/`: por domínios (`rh/`, `seguranca/`, `obras/`, `kpis/`)
+- Rotas com `react-router-dom` incluindo `/login` e guard
 
-## 🎨 **Design System**
+### Funcionalidades do MVP
+- Relatórios com filtros por período (mês/trimestre/ano) e área (RH/Segurança/Obras)
+- KPIs agregados e comparação vs meta, com badges de alerta
+- Exportação CSV e PDF
+- Configurações com persistência em `localStorage` (metas, limiares, identidade)
+- Autenticação simples e proteção de rotas
 
-### **Cores:**
-- **Primária**: Azul corporativo (#3B82F6)
-- **Secundária**: Cinza profissional (#64748B)
-- **Sucesso**: Verde (#10B981)
-- **Atenção**: Amarelo (#F59E0B)
-- **Erro**: Vermelho (#EF4444)
+### Documentação
+- Planejamento: `docs/planejamento.md`
+- Arquitetura: `docs/arquitetura.md`
+- Execução/Build/Deploy: `docs/guia-execucao.md`
+- Relatórios: `docs/relatorios.md`
+- Configurações: `docs/configuracoes.md`
+- Autenticação: `docs/autenticacao.md`
+- Design UI/UX: `docs/design-ui-ux.md`
+- Bibliotecas e API de serviços: `docs/documentacao/`
 
-### **Tipografia:**
-- **Títulos**: Inter Bold
-- **Corpo**: Inter Regular
-- **Dados**: Inter Medium
-
-## 📊 **Estrutura de Dados**
-
-O sistema utiliza dados mock realistas organizados em:
-- `funcionarios` - Dados de RH e departamentos
-- `seguranca` - Acidentes, EPIs e treinamentos
-- `obras` - Projetos, cronogramas e recursos
-- `kpis` - Indicadores de performance
-- `alertas` - Notificações do sistema
-
-## 🔮 **Próximos Passos**
-
-### **Fase 2 - Expansão:**
-- Módulo de Relatórios completo
-- Sistema de notificações push
-- Integração com sistemas existentes
-- App mobile nativo
-
-### **Fase 3 - Inteligência:**
-- Dashboard preditivo com IA
-- Análise de tendências automática
-- Recomendações inteligentes
-- Automação de processos
-
-## 👨‍💻 **Desenvolvido por**
-
-**Técnico de Automação** - JL Construtora  
-Demonstração de habilidades em desenvolvimento full-stack para transição de carreira.
-
----
-
-**Este projeto demonstra o potencial de transformação digital na JL Construtora, com foco em resultados mensuráveis e ROI comprovado.**
-
+### Deploy (previsto)
+- Vercel ou Netlify
+- Comando de build: `pnpm build`
+- Diretório de saída: `dist`
