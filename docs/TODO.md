@@ -14,12 +14,12 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 ## 📋 TAREFAS PRIORITÁRIAS (P0)
 
 ### 🔐 1. AUTENTICAÇÃO
-- [ ] **Criar estrutura de autenticação**
-  - [ ] `src/services/authService.js` - login fake + session management
-  - [ ] `src/components/auth/Login.jsx` - tela de login
-  - [ ] `src/components/auth/AuthGuard.jsx` - proteção de rotas
-  - [ ] Implementar React Router DOM para rotas protegidas
-  - [ ] Testar fluxo: login → logout → proteção de rotas
+- [x] **Criar estrutura de autenticação**
+  - [x] `src/services/authService.js` - login fake + session management
+  - [x] `src/components/auth/Login.jsx` - tela de login
+  - [x] `src/components/auth/AuthGuard.jsx` - proteção de rotas
+  - [x] Implementar React Router DOM para rotas protegidas
+  - [x] Testar fluxo: login → logout → proteção de rotas
 
 ### 📊 2. RELATÓRIOS (Módulo Completo)
 - [ ] **Estrutura de dados e serviços**
@@ -54,11 +54,11 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
   - [ ] Reflexo imediato nos KPIs e alertas
 
 ### 🏗️ 4. REFATORAÇÃO DE ARQUITETURA
-- [ ] **Reorganizar estrutura de pastas**
-  - [ ] Mover módulos para `src/pages/` ou `src/routes/`
+- [x] **Reorganizar estrutura de pastas**
+  - [x] Mover módulos para `src/pages/` ou `src/routes/`
   - [ ] Criar `src/components/common/` para componentes reutilizáveis
   - [ ] Organizar `src/data/` por domínios
-  - [ ] Implementar React Router DOM
+  - [x] Implementar React Router DOM
 
 ---
 
@@ -127,9 +127,9 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 - [ ] Persistência em localStorage funciona
 
 ### ✅ Autenticação
-- [ ] Rotas internas bloqueadas sem login
-- [ ] Logout limpa sessão corretamente
-- [ ] Redirecionamento funciona
+- [x] Rotas internas bloqueadas sem login
+- [x] Logout limpa sessão corretamente
+- [x] Redirecionamento funciona
 
 ### ✅ Qualidade
 - [ ] Responsivo em desktop, tablet, mobile
@@ -142,9 +142,9 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 ## 📅 CRONOGRAMA SUGERIDO
 
 ### **Dia 1 - Fundação**
-- [ ] Refatorar estrutura de pastas
-- [ ] Implementar AuthGuard e Login
-- [ ] Conectar React Router DOM
+- [x] Refatorar estrutura de pastas
+- [x] Implementar AuthGuard e Login
+- [x] Conectar React Router DOM
 
 ### **Dia 2 - Relatórios (Base)**
 - [ ] Criar reportService
@@ -180,7 +180,7 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 
 ## 🏁 CHECKLIST DE ENTREGA FINAL
 
-- [ ] Login funcional + rotas protegidas
+- [x] Login funcional + rotas protegidas
 - [ ] Relatórios com filtros (mês/trimestre/ano, RH/Segurança/Obras)
 - [ ] Export CSV e PDF confiáveis
 - [ ] Configurações persistentes (metas, limiares, identidade)
@@ -190,6 +190,6 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 
 ---
 
-**Status Atual**: 🟡 Em desenvolvimento - Base sólida implementada, faltam módulos principais (Relatórios, Configurações, Autenticação)
+**Status Atual**: 🟢 Autenticação implementada - Faltam módulos principais (Relatórios, Configurações)
 
-**Próximo Passo**: Implementar autenticação e React Router DOM
+**Próximo Passo**: Implementar módulo de Relatórios com filtros e exportação
