@@ -1,53 +1,98 @@
-import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
-import Sidebar from './components/Sidebar';
-import Dashboard from './components/Dashboard';
-import RHModule from './components/RHModule';
-import SegurancaModule from './components/SegurancaModule';
-import ObrasModule from './components/ObrasModule';
+import AuthGuard from './components/auth/AuthGuard';
+import Login from './components/auth/Login';
+import Layout from './components/Layout';
+import DashboardPage from './pages/DashboardPage';
+import RHPage from './pages/RHPage';
+import SegurancaPage from './pages/SegurancaPage';
+import ObrasPage from './pages/ObrasPage';
 
 function App() {
-  const [activeSection, setActiveSection] = useState('dashboard');
-
-  const renderContent = () => {
-    switch (activeSection) {
-      case 'dashboard':
-        return <Dashboard />;
-      case 'rh':
-        return <RHModule />;
-      case 'seguranca':
-        return <SegurancaModule />;
-      case 'obras':
-        return <ObrasModule />;
-      case 'relatorios':
-        return (
-          <div className="p-6">
-            <h1 className="text-3xl font-bold text-gray-900">Relatórios</h1>
-            <p className="text-gray-600 mt-1">Módulo em desenvolvimento...</p>
-          </div>
-        );
-      case 'configuracoes':
-        return (
-          <div className="p-6">
-            <h1 className="text-3xl font-bold text-gray-900">Configurações</h1>
-            <p className="text-gray-600 mt-1">Módulo em desenvolvimento...</p>
-          </div>
-        );
-      default:
-        return <Dashboard />;
-    }
-  };
-
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <Sidebar 
-        activeSection={activeSection} 
-        setActiveSection={setActiveSection} 
-      />
-      <main className="flex-1 overflow-auto">
-        {renderContent()}
-      </main>
-    </div>
+    <Router>
+      <Routes>
+        {/* Rota pública - Login */}
+        <Route path="/login" element={<Login />} />
+        
+        {/* Rota raiz - redireciona para dashboard */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        
+        {/* Rotas protegidas */}
+        <Route
+          path="/dashboard"
+          element={
+            <AuthGuard>
+              <Layout>
+                <DashboardPage />
+              </Layout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/rh"
+          element={
+            <AuthGuard>
+              <Layout>
+                <RHPage />
+              </Layout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/seguranca"
+          element={
+            <AuthGuard>
+              <Layout>
+                <SegurancaPage />
+              </Layout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/obras"
+          element={
+            <AuthGuard>
+              <Layout>
+                <ObrasPage />
+              </Layout>
+            </AuthGuard>
+          }
+        />
+        
+        {/* Rotas em desenvolvimento */}
+        <Route
+          path="/relatorios"
+          element={
+            <AuthGuard>
+              <Layout>
+                <div className="p-6">
+                  <h1 className="text-3xl font-bold text-gray-900">Relatórios</h1>
+                  <p className="text-gray-600 mt-1">Módulo em desenvolvimento...</p>
+                </div>
+              </Layout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/configuracoes"
+          element={
+            <AuthGuard>
+              <Layout>
+                <div className="p-6">
+                  <h1 className="text-3xl font-bold text-gray-900">Configurações</h1>
+                  <p className="text-gray-600 mt-1">Módulo em desenvolvimento...</p>
+                </div>
+              </Layout>
+            </AuthGuard>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 
