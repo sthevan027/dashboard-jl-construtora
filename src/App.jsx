@@ -7,6 +7,7 @@ import DashboardPage from './pages/DashboardPage';
 import RHPage from './pages/RHPage';
 import SegurancaPage from './pages/SegurancaPage';
 import ObrasPage from './pages/ObrasPage';
+import ReportsPage from './components/reports/ReportsPage';
 
 function App() {
   return (
@@ -63,16 +64,13 @@ function App() {
           }
         />
         
-        {/* Rotas em desenvolvimento */}
+        {/* Rota de Relatórios */}
         <Route
           path="/relatorios"
           element={
             <AuthGuard>
               <Layout>
-                <div className="p-6">
-                  <h1 className="text-3xl font-bold text-gray-900">Relatórios</h1>
-                  <p className="text-gray-600 mt-1">Módulo em desenvolvimento...</p>
-                </div>
+                <ReportsPage />
               </Layout>
             </AuthGuard>
           }

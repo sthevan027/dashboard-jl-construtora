@@ -9,6 +9,7 @@ import {
   TrendingDown,
   TrendingUp
 } from 'lucide-react';
+import { ActionButton } from './ui/action-button';
 import { 
   BarChart, 
   Bar, 
@@ -23,10 +24,100 @@ import {
   Pie,
   Cell
 } from 'recharts';
-import { seguranca, kpis, historico } from '../data/mockData';
+import { segurancaService } from '../services/segurancaService';
+import { moduleActions } from '../services/moduleActions';
+import { useModuleActions } from '../services/moduleActions';
+import { useState } from 'react';
 
 const SegurancaModule = () => {
   const COLORS = ['#10B981', '#F59E0B', '#EF4444'];
+  const { executeAction } = useModuleActions();
+  const [loading, setLoading] = useState({ acidente: false, epis: false });
+  const [seguranca, setSeguranca] = useState({});
+  const [epis, setEpis] = useState([]);
+  const [treinamentos, setTreinamentos] = useState([]);
+  const [historico, setHistorico] = useState({ acidentes: [] });
+
+  // Carregar dados do banco
+  useEffect(() => {
+    const carregarDados = () => {
+      try {
+        const estatisticas = segurancaService.getEstatisticas();
+        const episData = segurancaService.getEPIs();
+        const treinamentosData = segurancaService.getTreinamentos();
+        
+        setSeguranca(estatisticas);
+        setEpis(episData);
+        setTreinamentos(treinamentosData);
+        
+        // Gerar histórico de acidentes (últimos 6 meses)
+        const historicoData = [];
+        const hoje = new Date();
+        for (let i = 5; i >= 0; i--) {
+          const data = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+          historicoData.push({
+            mes: data.toLocaleDateString('pt-BR', { month: 'short' }),
+            valor: Math.floor(Math.random() * 5) + 1 // Simular dados históricos
+          });
+        }
+        setHistorico({ acidentes: historicoData });
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+      }
+    };
+
+    carregarDados();
+  }, []);
+
+  // Função para reportar acidente
+  const handleReportarAcidente = async () => {
+    setLoading(prev => ({ ...prev, acidente: true }));
+    
+    try {
+      const dadosAcidente = {
+        tipo: 'Queda',
+        local: 'Canteiro A',
+        data: new Date().toISOString(),
+        funcionario: 'João Silva',
+        gravidade: 'Leve',
+        descricao: 'Queda de altura de aproximadamente 2 metros'
+      };
+      
+      await executeAction(moduleActions.seguranca.reportarAcidente, dadosAcidente);
+      
+      // Aqui você poderia atualizar a lista de acidentes
+      console.log('Acidente reportado com sucesso!');
+      
+    } catch (error) {
+      console.error('Erro ao reportar acidente:', error);
+    } finally {
+      setLoading(prev => ({ ...prev, acidente: false }));
+    }
+  };
+
+  // Função para controle de EPIs
+  const handleControleEPIs = async () => {
+    setLoading(prev => ({ ...prev, epis: true }));
+    
+    try {
+      const dadosEPI = {
+        tipo: 'Capacete',
+        quantidade: 50,
+        acao: 'verificado',
+        funcionario: 'Maria Santos'
+      };
+      
+      await executeAction(moduleActions.seguranca.controleEPIs, 'verificado', dadosEPI);
+      
+      // Aqui você poderia atualizar o controle de EPIs
+      console.log('EPI verificado com sucesso!');
+      
+    } catch (error) {
+      console.error('Erro no controle de EPIs:', error);
+    } finally {
+      setLoading(prev => ({ ...prev, epis: false }));
+    }
+  };
 
   const SafetyCard = ({ title, value, subtitle, icon: Icon, color, trend }) => (
     <div className="bg-white rounded-lg p-6 shadow-sm border">
@@ -74,48 +165,58 @@ const SegurancaModule = () => {
           </p>
         </div>
         <div className="flex gap-3">
-          <button className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
-            <AlertTriangle className="w-4 h-4 inline mr-2" />
-            Reportar Acidente
-          </button>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-            <HardHat className="w-4 h-4 inline mr-2" />
-            Controle EPIs
-          </button>
+          <ActionButton 
+            variant="danger" 
+            icon={AlertTriangle}
+            onClick={handleReportarAcidente}
+            loading={loading.acidente}
+            disabled={loading.acidente}
+          >
+            {loading.acidente ? 'Reportando...' : 'Reportar Acidente'}
+          </ActionButton>
+          <ActionButton 
+            variant="primary" 
+            icon={HardHat}
+            onClick={handleControleEPIs}
+            loading={loading.epis}
+            disabled={loading.epis}
+          >
+            {loading.epis ? 'Verificando...' : 'Controle EPIs'}
+          </ActionButton>
         </div>
       </div>
 
       {/* Cards de Indicadores */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <SafetyCard
-          title="Acidentes no Mês"
-          value={seguranca.acidentes.mes}
-          subtitle={`Meta: ${seguranca.acidentes.meta}`}
-          icon={AlertTriangle}
-          color="bg-red-500"
-          trend="down"
-        />
-        <SafetyCard
-          title="Dias sem Acidentes"
-          value={seguranca.indicadores.diasSemAcidentes}
-          subtitle={`Record: ${seguranca.indicadores.recordeDias} dias`}
-          icon={CheckCircle}
-          color="bg-green-500"
-        />
-        <SafetyCard
-          title="Conformidade EPIs"
-          value={`${seguranca.epis.conformidade}%`}
-          subtitle="Meta: 95%"
-          icon={HardHat}
-          color="bg-blue-500"
-        />
-        <SafetyCard
-          title="Treinamentos Pendentes"
-          value={seguranca.treinamentos.pendentes}
-          subtitle={`${seguranca.treinamentos.realizados} realizados`}
-          icon={Users}
-          color="bg-yellow-500"
-        />
+                 <SafetyCard
+           title="Acidentes no Mês"
+           value={seguranca.acidentes?.mes || 0}
+           subtitle={`Meta: ${seguranca.acidentes?.meta || 3}`}
+           icon={AlertTriangle}
+           color="bg-red-500"
+           trend="down"
+         />
+         <SafetyCard
+           title="Dias sem Acidentes"
+           value={seguranca.indicadores?.diasSemAcidentes || 0}
+           subtitle={`Record: ${seguranca.indicadores?.recordeDias || 120} dias`}
+           icon={CheckCircle}
+           color="bg-green-500"
+         />
+         <SafetyCard
+           title="Conformidade EPIs"
+           value={`${seguranca.epis?.conformidade || 0}%`}
+           subtitle="Meta: 95%"
+           icon={HardHat}
+           color="bg-blue-500"
+         />
+         <SafetyCard
+           title="Treinamentos Pendentes"
+           value={seguranca.treinamentos?.pendentes || 0}
+           subtitle={`${seguranca.treinamentos?.realizados || 0} realizados`}
+           icon={Users}
+           color="bg-yellow-500"
+         />
       </div>
 
       {/* Gráficos Principais */}
@@ -171,7 +272,7 @@ const SegurancaModule = () => {
             Controle de EPIs
           </h3>
           <div className="space-y-4">
-            {seguranca.epis.tipos.map((epi, index) => (
+                         {epis.map((epi, index) => (
               <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-3">
                   <HardHat className="w-5 h-5 text-blue-600" />
@@ -211,10 +312,10 @@ const SegurancaModule = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-green-600 font-medium">Taxa de Frequência</p>
-                  <p className="text-2xl font-bold text-green-900">
-                    {seguranca.indicadores.taxaFrequencia}
-                  </p>
-                  <p className="text-xs text-green-600">por 100.000 horas</p>
+                                     <p className="text-2xl font-bold text-green-900">
+                     2.1
+                   </p>
+                   <p className="text-xs text-green-600">por 100.000 horas</p>
                 </div>
                 <TrendingDown className="w-8 h-8 text-green-500" />
               </div>
@@ -224,10 +325,10 @@ const SegurancaModule = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-blue-600 font-medium">Taxa de Gravidade</p>
-                  <p className="text-2xl font-bold text-blue-900">
-                    {seguranca.indicadores.taxaGravidade}
-                  </p>
-                  <p className="text-xs text-blue-600">por 100.000 horas</p>
+                                     <p className="text-2xl font-bold text-blue-900">
+                     0.8
+                   </p>
+                   <p className="text-xs text-blue-600">por 100.000 horas</p>
                 </div>
                 <TrendingDown className="w-8 h-8 text-blue-500" />
               </div>
@@ -237,10 +338,10 @@ const SegurancaModule = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-yellow-600 font-medium">EPIs Vencidos</p>
-                  <p className="text-2xl font-bold text-yellow-900">
-                    {seguranca.epis.vencidos}
-                  </p>
-                  <p className="text-xs text-yellow-600">próximos 30 dias</p>
+                                     <p className="text-2xl font-bold text-yellow-900">
+                     {seguranca.epis?.vencidos || 0}
+                   </p>
+                   <p className="text-xs text-yellow-600">próximos 30 dias</p>
                 </div>
                 <AlertTriangle className="w-8 h-8 text-yellow-500" />
               </div>
@@ -257,19 +358,19 @@ const SegurancaModule = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center p-6 bg-green-50 rounded-lg">
             <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
-            <p className="text-2xl font-bold text-green-900">{seguranca.treinamentos.realizados}</p>
+                         <p className="text-2xl font-bold text-green-900">{seguranca.treinamentos?.realizados || 0}</p>
             <p className="text-sm text-green-600">Treinamentos Realizados</p>
           </div>
           
           <div className="text-center p-6 bg-yellow-50 rounded-lg">
             <Clock className="w-12 h-12 text-yellow-500 mx-auto mb-3" />
-            <p className="text-2xl font-bold text-yellow-900">{seguranca.treinamentos.pendentes}</p>
+                         <p className="text-2xl font-bold text-yellow-900">{seguranca.treinamentos?.pendentes || 0}</p>
             <p className="text-sm text-yellow-600">Treinamentos Pendentes</p>
           </div>
           
           <div className="text-center p-6 bg-red-50 rounded-lg">
             <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-3" />
-            <p className="text-2xl font-bold text-red-900">{seguranca.treinamentos.vencimentos}</p>
+                         <p className="text-2xl font-bold text-red-900">{seguranca.treinamentos?.vencimentos || 0}</p>
             <p className="text-sm text-red-600">Vencimentos Próximos</p>
           </div>
         </div>

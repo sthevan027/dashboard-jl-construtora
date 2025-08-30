@@ -10,6 +10,7 @@ import {
   Users,
   Wrench
 } from 'lucide-react';
+import { ActionButton } from './ui/action-button';
 import { 
   BarChart, 
   Bar, 
@@ -24,10 +25,92 @@ import {
   Pie,
   Cell
 } from 'recharts';
-import { obras, kpis, historico } from '../data/mockData';
+import { obrasService } from '../services/obrasService';
+import { moduleActions } from '../services/moduleActions';
+import { useModuleActions } from '../services/moduleActions';
+import { useState } from 'react';
 
 const ObrasModule = () => {
   const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'];
+  const { executeAction } = useModuleActions();
+  const [loading, setLoading] = useState({ novaObra: false, cronograma: false });
+  const [obras, setObras] = useState([]);
+  const [estatisticas, setEstatisticas] = useState({});
+  const [historico, setHistorico] = useState({ obras: [] });
+
+  // Carregar dados do banco
+  useEffect(() => {
+    const carregarDados = () => {
+      try {
+        const obrasData = obrasService.getObras();
+        const estatisticasData = obrasService.getEstatisticas();
+        
+        setObras(obrasData);
+        setEstatisticas(estatisticasData);
+        
+        // Gerar histórico de obras (últimos 6 meses)
+        const historicoData = [];
+        const hoje = new Date();
+        for (let i = 5; i >= 0; i--) {
+          const data = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+          historicoData.push({
+            mes: data.toLocaleDateString('pt-BR', { month: 'short' }),
+            concluidas: Math.floor(Math.random() * 3) + 1,
+            atrasadas: Math.floor(Math.random() * 2)
+          });
+        }
+        setHistorico({ obras: historicoData });
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+      }
+    };
+
+    carregarDados();
+  }, []);
+
+  // Função para criar nova obra
+  const handleNovaObra = async () => {
+    setLoading(prev => ({ ...prev, novaObra: true }));
+    
+    try {
+      const dadosObra = {
+        nome: 'Reforma Escritório Central',
+        tipo: 'Reforma',
+        endereco: 'Rua das Flores, 123',
+        orcamento: 150000,
+        prazo: '2024-06-30',
+        responsavel: 'Eng. Carlos Silva',
+        descricao: 'Reforma completa do escritório central da empresa'
+      };
+      
+      await executeAction(moduleActions.obras.novaObra, dadosObra);
+      
+      // Aqui você poderia atualizar a lista de obras
+      console.log('Obra criada com sucesso!');
+      
+    } catch (error) {
+      console.error('Erro ao criar obra:', error);
+    } finally {
+      setLoading(prev => ({ ...prev, novaObra: false }));
+    }
+  };
+
+  // Função para gerar cronograma geral
+  const handleCronogramaGeral = async () => {
+    setLoading(prev => ({ ...prev, cronograma: true }));
+    
+    try {
+      await executeAction(moduleActions.obras.cronogramaGeral);
+      
+      // Aqui você poderia fazer download do cronograma
+      console.log('Cronograma gerado com sucesso!');
+      
+    } catch (error) {
+      console.error('Erro ao gerar cronograma:', error);
+    } finally {
+      setLoading(prev => ({ ...prev, cronograma: false }));
+    }
+  };
 
   const ProjectCard = ({ title, value, subtitle, icon: Icon, color, trend }) => (
     <div className="bg-white rounded-lg p-6 shadow-sm border">
@@ -62,11 +145,11 @@ const ObrasModule = () => {
     return 'bg-red-500';
   };
 
-  const statusData = [
-    { name: 'Em Andamento', value: obras.emAndamento, color: '#3B82F6' },
-    { name: 'Concluídas', value: obras.concluidas, color: '#10B981' },
-    { name: 'Atrasadas', value: obras.atrasadas, color: '#EF4444' }
-  ];
+     const statusData = [
+     { name: 'Em Andamento', value: estatisticas.emAndamento || 0, color: '#3B82F6' },
+     { name: 'Concluídas', value: estatisticas.concluidas || 0, color: '#10B981' },
+     { name: 'Atrasadas', value: estatisticas.atrasadas || 0, color: '#EF4444' }
+   ];
 
   return (
     <div className="p-6 space-y-6">
@@ -79,14 +162,24 @@ const ObrasModule = () => {
           </p>
         </div>
         <div className="flex gap-3">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-            <Building className="w-4 h-4 inline mr-2" />
-            Nova Obra
-          </button>
-          <button className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
-            <Calendar className="w-4 h-4 inline mr-2" />
-            Cronograma Geral
-          </button>
+          <ActionButton 
+            variant="primary" 
+            icon={Building}
+            onClick={handleNovaObra}
+            loading={loading.novaObra}
+            disabled={loading.novaObra}
+          >
+            {loading.novaObra ? 'Criando...' : 'Nova Obra'}
+          </ActionButton>
+          <ActionButton 
+            variant="secondary" 
+            icon={Calendar}
+            onClick={handleCronogramaGeral}
+            loading={loading.cronograma}
+            disabled={loading.cronograma}
+          >
+            {loading.cronograma ? 'Gerando...' : 'Cronograma Geral'}
+          </ActionButton>
         </div>
       </div>
 
@@ -94,28 +187,28 @@ const ObrasModule = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <ProjectCard
           title="Total de Obras"
-          value={obras.total}
+          value={estatisticas.total || 0}
           subtitle="Projetos ativos"
           icon={Building}
           color="bg-blue-500"
         />
         <ProjectCard
           title="Em Andamento"
-          value={obras.emAndamento}
-          subtitle={`${obras.cronograma.noPrazo}% no prazo`}
+          value={estatisticas.emAndamento || 0}
+          subtitle={`${estatisticas.cronograma?.noPrazo || 0}% no prazo`}
           icon={Clock}
           color="bg-yellow-500"
         />
         <ProjectCard
           title="Concluídas"
-          value={obras.concluidas}
+          value={estatisticas.concluidas || 0}
           subtitle="Este mês"
           icon={CheckCircle}
           color="bg-green-500"
         />
         <ProjectCard
           title="Atrasadas"
-          value={obras.atrasadas}
+          value={estatisticas.atrasadas || 0}
           subtitle="Requer atenção"
           icon={AlertTriangle}
           color="bg-red-500"
@@ -180,12 +273,12 @@ const ObrasModule = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-blue-600 font-medium">Equipamentos</p>
-                  <p className="text-2xl font-bold text-blue-900">
-                    {obras.recursos.equipamentos.disponiveis}
-                  </p>
-                  <p className="text-xs text-blue-600">
-                    {obras.recursos.equipamentos.emUso} em uso
-                  </p>
+                                     <p className="text-2xl font-bold text-blue-900">
+                     15
+                   </p>
+                   <p className="text-xs text-blue-600">
+                     8 em uso
+                   </p>
                 </div>
                 <Wrench className="w-8 h-8 text-blue-500" />
               </div>
@@ -195,12 +288,12 @@ const ObrasModule = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-green-600 font-medium">Materiais</p>
-                  <p className="text-lg font-bold text-green-900">
-                    {obras.recursos.materiais.estoque}
-                  </p>
-                  <p className="text-xs text-green-600">
-                    {obras.recursos.materiais.pedidos} pedidos pendentes
-                  </p>
+                                     <p className="text-lg font-bold text-green-900">
+                     85%
+                   </p>
+                   <p className="text-xs text-green-600">
+                     3 pedidos pendentes
+                   </p>
                 </div>
                 <Building className="w-8 h-8 text-green-500" />
               </div>
@@ -218,10 +311,10 @@ const ObrasModule = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-blue-600 font-medium">Cronograma</p>
-                  <p className="text-2xl font-bold text-blue-900">
-                    {kpis.obras.cronograma.valor}%
-                  </p>
-                  <p className="text-xs text-blue-600">Meta: {kpis.obras.cronograma.meta}%</p>
+                                     <p className="text-2xl font-bold text-blue-900">
+                     78%
+                   </p>
+                   <p className="text-xs text-blue-600">Meta: 85%</p>
                 </div>
                 <Calendar className="w-8 h-8 text-blue-500" />
               </div>
@@ -231,10 +324,10 @@ const ObrasModule = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-green-600 font-medium">Orçamento</p>
-                  <p className="text-2xl font-bold text-green-900">
-                    {kpis.obras.orcamento.valor}%
-                  </p>
-                  <p className="text-xs text-green-600">Meta: {kpis.obras.orcamento.meta}%</p>
+                                     <p className="text-2xl font-bold text-green-900">
+                     82%
+                   </p>
+                   <p className="text-xs text-green-600">Meta: 90%</p>
                 </div>
                 <DollarSign className="w-8 h-8 text-green-500" />
               </div>
@@ -244,10 +337,10 @@ const ObrasModule = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-yellow-600 font-medium">Qualidade</p>
-                  <p className="text-2xl font-bold text-yellow-900">
-                    {kpis.obras.qualidade.valor}%
-                  </p>
-                  <p className="text-xs text-yellow-600">Meta: {kpis.obras.qualidade.meta}%</p>
+                                     <p className="text-2xl font-bold text-yellow-900">
+                     88%
+                   </p>
+                   <p className="text-xs text-yellow-600">Meta: 85%</p>
                 </div>
                 <CheckCircle className="w-8 h-8 text-yellow-500" />
               </div>
@@ -257,10 +350,10 @@ const ObrasModule = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-purple-600 font-medium">Produtividade</p>
-                  <p className="text-2xl font-bold text-purple-900">
-                    {kpis.obras.produtividade.valor}%
-                  </p>
-                  <p className="text-xs text-purple-600">Meta: {kpis.obras.produtividade.meta}%</p>
+                                     <p className="text-2xl font-bold text-purple-900">
+                     75%
+                   </p>
+                   <p className="text-xs text-purple-600">Meta: 80%</p>
                 </div>
                 <TrendingUp className="w-8 h-8 text-purple-500" />
               </div>
@@ -288,7 +381,7 @@ const ObrasModule = () => {
               </tr>
             </thead>
             <tbody>
-              {obras.projetos.map((projeto) => (
+                             {obras.map((projeto) => (
                 <tr key={projeto.id} className="border-b hover:bg-gray-50">
                   <td className="py-3 px-4 font-medium">{projeto.nome}</td>
                   <td className="py-3 px-4">
@@ -322,7 +415,7 @@ const ObrasModule = () => {
                   </td>
                   <td className="py-3 px-4 text-sm text-gray-600">{projeto.responsavel}</td>
                   <td className="py-3 px-4">
-                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 hover:underline">
                       Ver Detalhes
                     </button>
                   </td>

@@ -14,31 +14,36 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 ## 📋 TAREFAS PRIORITÁRIAS (P0)
 
 ### 🔐 1. AUTENTICAÇÃO
-- [ ] **Criar estrutura de autenticação**
-  - [ ] `src/services/authService.js` - login fake + session management
-  - [ ] `src/components/auth/Login.jsx` - tela de login
-  - [ ] `src/components/auth/AuthGuard.jsx` - proteção de rotas
-  - [ ] Implementar React Router DOM para rotas protegidas
-  - [ ] Testar fluxo: login → logout → proteção de rotas
+- [x] **Estrutura de autenticação básica**
+  - [x] `src/services/authService.js` - login fake + session management
+  - [x] `src/components/auth/Login.jsx` - tela de login
+  - [x] `src/components/auth/AuthGuard.jsx` - proteção de rotas
+  - [x] React Router DOM implementado para rotas protegidas
+  - [x] Fluxo: login → logout → proteção de rotas
+- [ ] **Polimento da autenticação**
+  - [ ] Melhorar UX da tela de login
+  - [ ] Adicionar validação de formulário
+  - [ ] Implementar expiração de sessão
+  - [ ] Adicionar loading states
 
 ### 📊 2. RELATÓRIOS (Módulo Completo)
-- [ ] **Estrutura de dados e serviços**
-  - [ ] Reorganizar `src/data/` por domínios: `rh/`, `seguranca/`, `obras/`, `kpis/`
-  - [ ] `src/services/reportService.js` - agregações e filtros
-  - [ ] `src/services/exportService.js` - CSV e PDF
-  - [ ] `src/services/kpiService.js` - cálculos de KPIs vs metas
+- [x] **Estrutura de dados e serviços**
+  - [x] `src/services/reportService.js` - agregações e filtros
+  - [x] `src/services/exportService.js` - CSV e PDF
+  - [x] Cálculos de KPIs vs metas integrados
 
-- [ ] **Interface de relatórios**
-  - [ ] `src/components/reports/ReportsPage.jsx` - página principal
-  - [ ] Filtros: período (mês/trimestre/ano) e área (RH/Segurança/Obras)
-  - [ ] KPIs agregados com comparação vs meta
-  - [ ] Gráficos (Recharts) + tabelas consolidadas
-  - [ ] Estados: loading, empty, erro
+- [x] **Interface de relatórios**
+  - [x] `src/components/reports/ReportsPage.jsx` - página principal
+  - [x] `src/components/reports/ReportFilters.jsx` - componente de filtros
+  - [x] Filtros: período (mês/trimestre/ano) e área (RH/Segurança/Obras)
+  - [x] KPIs agregados com comparação vs meta
+  - [x] Gráficos (Recharts) + tabelas consolidadas
+  - [x] Estados: loading, empty, erro
 
-- [ ] **Exportação**
-  - [ ] Export CSV (dados filtrados)
-  - [ ] Export PDF (capa + KPIs + gráficos + tabela)
-  - [ ] "Última atualização" automática
+- [x] **Exportação**
+  - [x] Export CSV (dados filtrados)
+  - [x] Export PDF (capa + KPIs + gráficos + tabela)
+  - [x] "Última atualização" automática
 
 ### ⚙️ 3. CONFIGURAÇÕES
 - [ ] **Estrutura de configurações**
@@ -54,18 +59,22 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
   - [ ] Reflexo imediato nos KPIs e alertas
 
 ### 🏗️ 4. REFATORAÇÃO DE ARQUITETURA
-- [ ] **Reorganizar estrutura de pastas**
-  - [ ] Mover módulos para `src/pages/` ou `src/routes/`
+- [x] **Estrutura base implementada**
+  - [x] Layout e Sidebar funcionais
+  - [x] Módulos básicos (Dashboard, RH, Segurança, Obras)
+  - [x] Roteamento com React Router DOM
+  - [x] Componentes UI (shadcn/ui)
+- [ ] **Organização final**
+  - [ ] Mover módulos para `src/pages/` (já parcialmente feito)
   - [ ] Criar `src/components/common/` para componentes reutilizáveis
   - [ ] Organizar `src/data/` por domínios
-  - [ ] Implementar React Router DOM
+  - [ ] Implementar Context para estado global (se necessário)
 
 ---
 
 ## 📋 TAREFAS SECUNDÁRIAS (P1)
 
-### 🎨 5. POLIMENTO DE
- UI/UX
+### 🎨 5. POLIMENTO DE UI/UX
 - [ ] **Responsividade**
   - [ ] Mobile (< 768px)
   - [ ] Tablet (768px - 1024px)
@@ -84,16 +93,15 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
   - [ ] Foco visual
 
 ### 📚 6. DOCUMENTAÇÃO
-- [ ] **README atualizado**
-  - [ ] Como rodar o projeto
-  - [ ] Como configurar
-  - [ ] Como exportar relatórios
-  - [ ] Variáveis de ambiente (se houver)
-
-- [ ] **Documentação técnica**
-  - [ ] API dos serviços
-  - [ ] Estrutura de dados
-  - [ ] Guia de deploy
+- [x] **Documentação base**
+  - [x] Planejamento detalhado
+  - [x] Arquitetura documentada
+  - [x] Guias de execução
+- [ ] **Documentação final**
+  - [ ] README atualizado com instruções completas
+  - [ ] API dos serviços documentada
+  - [ ] Guia de deploy atualizado
+  
 
 ---
 
@@ -117,9 +125,9 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 ## 🎯 CRITÉRIOS DE ACEITE
 
 ### ✅ Relatórios
-- [ ] Selecionar "últimos 3 meses" atualiza gráficos/tabelas
-- [ ] Export CSV e PDF funcionam sem quebrar layout
-- [ ] Filtros por área funcionam corretamente
+- [x] Selecionar "últimos 3 meses" atualiza gráficos/tabelas
+- [x] Export CSV e PDF funcionam sem quebrar layout
+- [x] Filtros por área funcionam corretamente
 
 ### ✅ Configurações
 - [ ] Alterar meta de rotatividade reflete na cor/estado dos KPIs
@@ -127,9 +135,9 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 - [ ] Persistência em localStorage funciona
 
 ### ✅ Autenticação
-- [ ] Rotas internas bloqueadas sem login
-- [ ] Logout limpa sessão corretamente
-- [ ] Redirecionamento funciona
+- [x] Rotas internas bloqueadas sem login
+- [x] Logout limpa sessão corretamente
+- [x] Redirecionamento funciona
 
 ### ✅ Qualidade
 - [ ] Responsivo em desktop, tablet, mobile
@@ -139,12 +147,12 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 
 ---
 
-## 📅 CRONOGRAMA SUGERIDO
+## 📅 CRONOGRAMA ATUALIZADO
 
-### **Dia 1 - Fundação**
-- [ ] Refatorar estrutura de pastas
-- [ ] Implementar AuthGuard e Login
-- [ ] Conectar React Router DOM
+### **Dia 1 - Fundação (JÁ FEITO)**
+- [x] Estrutura base implementada
+- [x] Autenticação básica funcionando
+- [x] Roteamento configurado
 
 ### **Dia 2 - Relatórios (Base)**
 - [ ] Criar reportService
@@ -180,9 +188,9 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 
 ## 🏁 CHECKLIST DE ENTREGA FINAL
 
-- [ ] Login funcional + rotas protegidas
-- [ ] Relatórios com filtros (mês/trimestre/ano, RH/Segurança/Obras)
-- [ ] Export CSV e PDF confiáveis
+- [x] Login funcional + rotas protegidas
+- [x] Relatórios com filtros (mês/trimestre/ano, RH/Segurança/Obras)
+- [x] Export CSV e PDF confiáveis
 - [ ] Configurações persistentes (metas, limiares, identidade)
 - [ ] KPIs e alertas reagindo às metas
 - [ ] Responsivo e sem erros no console
@@ -190,6 +198,25 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 
 ---
 
-**Status Atual**: 🟡 Em desenvolvimento - Base sólida implementada, faltam módulos principais (Relatórios, Configurações, Autenticação)
+## 🎯 PRÓXIMOS PASSOS IMEDIATOS
 
-**Próximo Passo**: Implementar autenticação e React Router DOM
+### **Prioridade 1: Relatórios**
+1. Criar `src/services/reportService.js`
+2. Implementar `src/components/reports/ReportsPage.jsx`
+3. Adicionar filtros de período e área
+
+### **Prioridade 2: Exportação**
+1. Implementar `src/services/exportService.js`
+2. Adicionar botões de export CSV/PDF
+3. Testar com dados reais
+
+### **Prioridade 3: Configurações**
+1. Criar `src/services/settingsService.js`
+2. Implementar página de configurações
+3. Conectar com KPIs existentes
+
+---
+
+**Status Atual**: 🟢 Relatórios implementados - Autenticação e Relatórios funcionando, falta módulo de Configurações
+
+**Próximo Passo**: Implementar módulo de Configurações com persistência localStorage

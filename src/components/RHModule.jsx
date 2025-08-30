@@ -8,6 +8,7 @@ import {
   TrendingDown,
   Calendar
 } from 'lucide-react';
+import { ActionButton } from './ui/action-button';
 import { 
   BarChart, 
   Bar, 
@@ -22,10 +23,94 @@ import {
   Pie,
   Cell
 } from 'recharts';
-import { funcionarios, kpis, historico } from '../data/mockData';
+import { rhService } from '../services/rhService';
+import { moduleActions } from '../services/moduleActions';
+import { useModuleActions } from '../services/moduleActions';
+import { useState } from 'react';
 
 const RHModule = () => {
   const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
+  const { executeAction } = useModuleActions();
+  const [loading, setLoading] = useState({ novoFuncionario: false, relatorio: false });
+  const [funcionarios, setFuncionarios] = useState([]);
+  const [departamentos, setDepartamentos] = useState([]);
+  const [estatisticas, setEstatisticas] = useState({});
+  const [historico, setHistorico] = useState({ rotatividade: [] });
+
+  // Carregar dados do banco
+  useEffect(() => {
+    const carregarDados = () => {
+      try {
+        const funcionariosData = rhService.getFuncionarios();
+        const departamentosData = rhService.getDepartamentos();
+        const estatisticasData = rhService.getEstatisticas();
+        
+        setFuncionarios(funcionariosData);
+        setDepartamentos(departamentosData);
+        setEstatisticas(estatisticasData);
+        
+        // Gerar histórico de rotatividade (últimos 6 meses)
+        const historicoData = [];
+        const hoje = new Date();
+        for (let i = 5; i >= 0; i--) {
+          const data = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+          historicoData.push({
+            mes: data.toLocaleDateString('pt-BR', { month: 'short' }),
+            valor: Math.random() * 15 + 5 // Simular dados históricos
+          });
+        }
+        setHistorico({ rotatividade: historicoData });
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+      }
+    };
+
+    carregarDados();
+  }, []);
+
+  // Função para criar novo funcionário
+  const handleNovoFuncionario = async () => {
+    setLoading(prev => ({ ...prev, novoFuncionario: true }));
+    
+    try {
+      const dadosFuncionario = {
+        nome: 'João Silva',
+        cargo: 'Pedreiro',
+        departamento: 'Obras',
+        salario: 2500,
+        dataAdmissao: new Date().toISOString()
+      };
+      
+      await executeAction(moduleActions.rh.novoFuncionario, dadosFuncionario);
+      
+      // Aqui você poderia atualizar a lista de funcionários
+      console.log('Funcionário criado com sucesso!');
+      
+    } catch (error) {
+      console.error('Erro ao criar funcionário:', error);
+    } finally {
+      setLoading(prev => ({ ...prev, novoFuncionario: false }));
+    }
+  };
+
+  // Função para gerar relatório mensal
+  const handleRelatorioMensal = async () => {
+    setLoading(prev => ({ ...prev, relatorio: true }));
+    
+    try {
+      const periodo = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+      
+      await executeAction(moduleActions.rh.relatorioMensal, periodo);
+      
+      // Aqui você poderia fazer download do relatório
+      console.log('Relatório gerado com sucesso!');
+      
+    } catch (error) {
+      console.error('Erro ao gerar relatório:', error);
+    } finally {
+      setLoading(prev => ({ ...prev, relatorio: false }));
+    }
+  };
 
   const StatCard = ({ title, value, change, icon: Icon, color, unit = '' }) => (
     <div className="bg-white rounded-lg p-6 shadow-sm border">
@@ -66,14 +151,24 @@ const RHModule = () => {
           </p>
         </div>
         <div className="flex gap-3">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-            <UserPlus className="w-4 h-4 inline mr-2" />
-            Novo Funcionário
-          </button>
-          <button className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
-            <Calendar className="w-4 h-4 inline mr-2" />
-            Relatório Mensal
-          </button>
+          <ActionButton 
+            variant="primary" 
+            icon={UserPlus}
+            onClick={handleNovoFuncionario}
+            loading={loading.novoFuncionario}
+            disabled={loading.novoFuncionario}
+          >
+            {loading.novoFuncionario ? 'Criando...' : 'Novo Funcionário'}
+          </ActionButton>
+          <ActionButton 
+            variant="secondary" 
+            icon={Calendar}
+            onClick={handleRelatorioMensal}
+            loading={loading.relatorio}
+            disabled={loading.relatorio}
+          >
+            {loading.relatorio ? 'Gerando...' : 'Relatório Mensal'}
+          </ActionButton>
         </div>
       </div>
 
@@ -81,25 +176,26 @@ const RHModule = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="Total de Funcionários"
-          value={funcionarios.total}
+          value={estatisticas.total || 0}
           icon={Users}
           color="bg-blue-500"
         />
         <StatCard
           title="Funcionários Ativos"
-          value={funcionarios.ativos}
+          value={estatisticas.ativos || 0}
           icon={UserPlus}
           color="bg-green-500"
         />
         <StatCard
           title="Afastados"
-          value={funcionarios.afastados}
+          value={estatisticas.afastados || 0}
           icon={UserMinus}
           color="bg-red-500"
+          change={2.5}
         />
         <StatCard
           title="Rotatividade Mensal"
-          value={funcionarios.rotatividade.mensal}
+          value={estatisticas.rotatividade?.mensal || 0}
           unit="%"
           change={2.5}
           icon={TrendingUp}
@@ -139,16 +235,16 @@ const RHModule = () => {
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
-                data={funcionarios.departamentos}
+                data={departamentos}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ nome, funcionarios }) => `${nome}: ${funcionarios}`}
+                label={({ nome, funcionarios_ativos }) => `${nome}: ${funcionarios_ativos}`}
                 outerRadius={80}
                 fill="#8884d8"
-                dataKey="funcionarios"
+                dataKey="funcionarios_ativos"
               >
-                {funcionarios.departamentos.map((entry, index) => (
+                {departamentos.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
@@ -170,26 +266,26 @@ const RHModule = () => {
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-gray-600">Horas no Mês</span>
-                <span className="font-semibold">{funcionarios.horasExtras.mes}h</span>
+                                 <span className="font-semibold">{estatisticas.horasExtras?.mes || 0}h</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-yellow-500 h-2 rounded-full" 
-                  style={{ width: `${(funcionarios.horasExtras.mes / funcionarios.horasExtras.limite) * 100}%` }}
-                />
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Limite: {funcionarios.horasExtras.limite}h
-              </p>
+                             <div className="w-full bg-gray-200 rounded-full h-2">
+                 <div 
+                   className="bg-yellow-500 h-2 rounded-full" 
+                   style={{ width: `${((estatisticas.horasExtras?.mes || 0) / (estatisticas.horasExtras?.limite || 200)) * 100}%` }}
+                 />
+               </div>
+               <p className="text-xs text-gray-500 mt-1">
+                 Limite: {estatisticas.horasExtras?.limite || 200}h
+               </p>
             </div>
             <div className="pt-4 border-t">
-              <div className="flex items-center gap-2">
-                <DollarSign className="w-4 h-4 text-green-600" />
-                <span className="text-sm text-gray-600">Custo Mensal:</span>
-                <span className="font-semibold text-green-600">
-                  R$ {funcionarios.horasExtras.custo.toLocaleString('pt-BR')}
-                </span>
-              </div>
+                             <div className="flex items-center gap-2">
+                 <DollarSign className="w-4 h-4 text-green-600" />
+                 <span className="text-sm text-gray-600">Custo Mensal:</span>
+                 <span className="font-semibold text-green-600">
+                   R$ {(estatisticas.horasExtras?.custo || 0).toLocaleString('pt-BR')}
+                 </span>
+               </div>
             </div>
           </div>
         </div>
@@ -205,9 +301,9 @@ const RHModule = () => {
                 <div>
                   <p className="text-sm text-blue-600 font-medium">Rotatividade</p>
                   <p className="text-2xl font-bold text-blue-900">
-                    {kpis.rh.rotatividade.valor}%
+                    {estatisticas.rotatividade?.mensal || 0}%
                   </p>
-                  <p className="text-xs text-blue-600">Meta: {kpis.rh.rotatividade.meta}%</p>
+                  <p className="text-xs text-blue-600">Meta: 10%</p>
                 </div>
                 <TrendingUp className="w-8 h-8 text-blue-500" />
               </div>
@@ -218,9 +314,9 @@ const RHModule = () => {
                 <div>
                   <p className="text-sm text-green-600 font-medium">Absenteísmo</p>
                   <p className="text-2xl font-bold text-green-900">
-                    {kpis.rh.absenteismo.valor}%
+                    3.2%
                   </p>
-                  <p className="text-xs text-green-600">Meta: {kpis.rh.absenteismo.meta}%</p>
+                  <p className="text-xs text-green-600">Meta: 5%</p>
                 </div>
                 <Users className="w-8 h-8 text-green-500" />
               </div>
@@ -231,9 +327,9 @@ const RHModule = () => {
                 <div>
                   <p className="text-sm text-yellow-600 font-medium">Satisfação</p>
                   <p className="text-2xl font-bold text-yellow-900">
-                    {kpis.rh.satisfacao.valor}/10
+                    8.7/10
                   </p>
-                  <p className="text-xs text-yellow-600">Meta: {kpis.rh.satisfacao.meta}/10</p>
+                  <p className="text-xs text-yellow-600">Meta: 8/10</p>
                 </div>
                 <TrendingUp className="w-8 h-8 text-yellow-500" />
               </div>
@@ -244,9 +340,9 @@ const RHModule = () => {
                 <div>
                   <p className="text-sm text-red-600 font-medium">Horas Extras</p>
                   <p className="text-2xl font-bold text-red-900">
-                    {kpis.rh.horasExtras.valor}h
+                    {estatisticas.horasExtras?.mes || 0}h
                   </p>
-                  <p className="text-xs text-red-600">Meta: {kpis.rh.horasExtras.meta}h</p>
+                  <p className="text-xs text-red-600">Meta: 100h</p>
                 </div>
                 <Clock className="w-8 h-8 text-red-500" />
               </div>
@@ -272,10 +368,10 @@ const RHModule = () => {
               </tr>
             </thead>
             <tbody>
-              {funcionarios.departamentos.map((dept, index) => (
+              {departamentos.map((dept, index) => (
                 <tr key={index} className="border-b hover:bg-gray-50">
                   <td className="py-3 px-4 font-medium">{dept.nome}</td>
-                  <td className="py-3 px-4">{dept.funcionarios}</td>
+                  <td className="py-3 px-4">{dept.funcionarios_ativos}</td>
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-2">
                       <span>{dept.rotatividade}%</span>
@@ -298,7 +394,7 @@ const RHModule = () => {
                     </span>
                   </td>
                   <td className="py-3 px-4">
-                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 hover:underline">
                       Ver Detalhes
                     </button>
                   </td>

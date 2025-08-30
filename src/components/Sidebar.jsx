@@ -47,7 +47,7 @@ const Sidebar = () => {
           )}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-2 rounded-lg hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-lg hover:bg-slate-800 transition-all duration-200 ease-in-out transform hover:scale-110 active:scale-95"
           >
             {isCollapsed ? <Menu size={20} /> : <X size={20} />}
           </button>
@@ -65,10 +65,10 @@ const Sidebar = () => {
               <li key={item.id}>
                 <button
                   onClick={() => navigate(item.id)}
-                  className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                  className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ease-in-out transform hover:scale-[1.02] active:scale-[0.98] ${
                     isActive 
-                      ? 'bg-blue-600 text-white' 
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                      ? 'bg-blue-600 text-white shadow-lg' 
+                      : 'text-slate-300 hover:bg-slate-800 hover:text-white hover:shadow-md'
                   }`}
                   title={isCollapsed ? item.label : ''}
                 >
@@ -98,7 +98,7 @@ const Sidebar = () => {
         )}
         <button
           onClick={handleLogout}
-          className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors text-slate-300 hover:bg-slate-800 hover:text-white ${
+          className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ease-in-out transform hover:scale-[1.02] active:scale-[0.98] text-slate-300 hover:bg-slate-800 hover:text-white hover:shadow-md ${
             isCollapsed ? 'justify-center' : ''
           }`}
           title={isCollapsed ? 'Sair' : ''}

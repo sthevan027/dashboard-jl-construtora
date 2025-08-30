@@ -8,6 +8,7 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Alert, AlertDescription } from '../ui/alert';
+import { useToast } from '../ui/toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,6 +17,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { showToast, ToastContainer } = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,10 +27,13 @@ const Login = () => {
     try {
       const result = await authService.login(email, password);
       if (result.success) {
+        showToast('Login realizado com sucesso!', 'success');
         navigate('/dashboard');
       }
     } catch (err) {
-      setError(err.message || 'Erro ao fazer login');
+      const errorMessage = err.message || 'Erro ao fazer login';
+      setError(errorMessage);
+      showToast(errorMessage, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -36,6 +41,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4">
+      <ToastContainer />
       <div className="w-full max-w-md">
         {/* Logo e título */}
         <div className="text-center mb-8">
@@ -95,7 +101,7 @@ const Login = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-all duration-200 ease-in-out hover:scale-110 active:scale-95"
                     disabled={isLoading}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -115,6 +121,7 @@ const Login = () => {
                 type="submit"
                 className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium"
                 disabled={isLoading}
+                loading={isLoading}
               >
                 {isLoading ? (
                   <>
