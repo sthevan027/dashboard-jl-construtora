@@ -14,17 +14,12 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 ## 📋 TAREFAS PRIORITÁRIAS (P0)
 
 ### 🔐 1. AUTENTICAÇÃO
-- [x] **Estrutura de autenticação básica**
-  - [x] `src/services/authService.js` - login fake + session management
-  - [x] `src/components/auth/Login.jsx` - tela de login
-  - [x] `src/components/auth/AuthGuard.jsx` - proteção de rotas
-  - [x] React Router DOM implementado para rotas protegidas
-  - [x] Fluxo: login → logout → proteção de rotas
-- [ ] **Polimento da autenticação**
-  - [ ] Melhorar UX da tela de login
-  - [ ] Adicionar validação de formulário
-  - [ ] Implementar expiração de sessão
-  - [ ] Adicionar loading states
+- [ ] **Criar estrutura de autenticação**
+  - [ ] `src/services/authService.js` - login fake + session management
+  - [ ] `src/components/auth/Login.jsx` - tela de login
+  - [ ] `src/components/auth/AuthGuard.jsx` - proteção de rotas
+  - [ ] Implementar React Router DOM para rotas protegidas
+  - [ ] Testar fluxo: login → logout → proteção de rotas
 
 ### 📊 2. RELATÓRIOS (Módulo Completo)
 - [x] **Estrutura de dados e serviços**
@@ -59,16 +54,11 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
   - [ ] Reflexo imediato nos KPIs e alertas
 
 ### 🏗️ 4. REFATORAÇÃO DE ARQUITETURA
-- [x] **Estrutura base implementada**
-  - [x] Layout e Sidebar funcionais
-  - [x] Módulos básicos (Dashboard, RH, Segurança, Obras)
-  - [x] Roteamento com React Router DOM
-  - [x] Componentes UI (shadcn/ui)
-- [ ] **Organização final**
-  - [ ] Mover módulos para `src/pages/` (já parcialmente feito)
+- [ ] **Reorganizar estrutura de pastas**
+  - [ ] Mover módulos para `src/pages/` ou `src/routes/`
   - [ ] Criar `src/components/common/` para componentes reutilizáveis
   - [ ] Organizar `src/data/` por domínios
-  - [ ] Implementar Context para estado global (se necessário)
+  - [ ] Implementar React Router DOM
 
 ---
 
@@ -149,10 +139,10 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 
 ## 📅 CRONOGRAMA ATUALIZADO
 
-### **Dia 1 - Fundação (JÁ FEITO)**
-- [x] Estrutura base implementada
-- [x] Autenticação básica funcionando
-- [x] Roteamento configurado
+### **Dia 1 - Fundação**
+- [ ] Refatorar estrutura de pastas
+- [ ] Implementar AuthGuard e Login
+- [ ] Conectar React Router DOM
 
 ### **Dia 2 - Relatórios (Base)**
 - [ ] Criar reportService
@@ -188,9 +178,9 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 
 ## 🏁 CHECKLIST DE ENTREGA FINAL
 
-- [x] Login funcional + rotas protegidas
-- [x] Relatórios com filtros (mês/trimestre/ano, RH/Segurança/Obras)
-- [x] Export CSV e PDF confiáveis
+- [ ] Login funcional + rotas protegidas
+- [ ] Relatórios com filtros (mês/trimestre/ano, RH/Segurança/Obras)
+- [ ] Export CSV e PDF confiáveis
 - [ ] Configurações persistentes (metas, limiares, identidade)
 - [ ] KPIs e alertas reagindo às metas
 - [ ] Responsivo e sem erros no console
@@ -198,25 +188,6 @@ Baseado na documentação em `/docs/`, este TODO lista todas as tarefas necessá
 
 ---
 
-## 🎯 PRÓXIMOS PASSOS IMEDIATOS
+**Status Atual**: 🟡 Em desenvolvimento - Base sólida implementada, faltam módulos principais (Relatórios, Configurações, Autenticação)
 
-### **Prioridade 1: Relatórios**
-1. Criar `src/services/reportService.js`
-2. Implementar `src/components/reports/ReportsPage.jsx`
-3. Adicionar filtros de período e área
-
-### **Prioridade 2: Exportação**
-1. Implementar `src/services/exportService.js`
-2. Adicionar botões de export CSV/PDF
-3. Testar com dados reais
-
-### **Prioridade 3: Configurações**
-1. Criar `src/services/settingsService.js`
-2. Implementar página de configurações
-3. Conectar com KPIs existentes
-
----
-
-**Status Atual**: 🟢 Relatórios implementados - Autenticação e Relatórios funcionando, falta módulo de Configurações
-
-**Próximo Passo**: Implementar módulo de Configurações com persistência localStorage
+**Próximo Passo**: Implementar autenticação e React Router DOM
