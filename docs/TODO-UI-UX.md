@@ -16,53 +16,53 @@ Transformar o dashboard em uma experiência visual moderna, intuitiva e profissi
 **Objetivo**: Estabelecer base sólida de design system
 
 #### **Sistema de Cores**
-- [ ] **Paleta Corporativa JL Construtora**
-  - [ ] Definir cores primárias (azul profissional)
-  - [ ] Definir cores secundárias (dourado/amarelo)
-  - [ ] Criar escala de cinzas
-  - [ ] Definir cores de estado (success, warning, error, info)
+- [x] **Paleta Corporativa JL Construtora**
+  - [x] Definir cores primárias (azul profissional)
+  - [x] Definir cores secundárias (dourado/amarelo)
+  - [x] Criar escala de cinzas
+  - [x] Definir cores de estado (success, warning, error, info)
 
-- [ ] **Variáveis CSS Customizadas**
-  - [ ] Criar `src/styles/design-tokens.css`
-  - [ ] Definir todas as variáveis de cor
-  - [ ] Implementar modo escuro/claro
-  - [ ] Testar contraste de acessibilidade
+- [x] **Variáveis CSS Customizadas**
+  - [x] Criar `src/styles/design-tokens.css`
+  - [x] Definir todas as variáveis de cor
+  - [x] Implementar modo escuro/claro (tokens + toggle)
+  - [x] Testar contraste de acessibilidade
 
-- [ ] **Gradientes e Sombras**
-  - [ ] Sistema de sombras (sm, md, lg, xl, 2xl)
-  - [ ] Gradientes corporativos
-  - [ ] Efeitos de elevação
+- [x] **Gradientes e Sombras**
+  - [x] Sistema de sombras (sm, md, lg, xl, 2xl)
+  - [x] Gradientes corporativos
+  - [x] Efeitos de elevação
 
 #### **Tipografia**
-- [ ] **Fontes Personalizadas**
-  - [ ] Importar Inter do Google Fonts
-  - [ ] Configurar fallbacks
-  - [ ] Definir hierarquia tipográfica
+- [x] **Fontes Personalizadas**
+  - [x] Importar Inter do Google Fonts
+  - [x] Configurar fallbacks
+  - [x] Definir hierarquia tipográfica
 
-- [ ] **Sistema de Texto**
-  - [ ] Tamanhos (xs, sm, base, lg, xl, 2xl, 3xl, 4xl, 5xl)
-  - [ ] Pesos (light, normal, medium, semibold, bold, extrabold)
-  - [ ] Line-heights otimizados
-  - [ ] Responsividade de texto
+- [x] **Sistema de Texto**
+  - [x] Tamanhos (xs, sm, base, lg, xl, 2xl, 3xl, 4xl, 5xl)
+  - [x] Pesos (light, normal, medium, semibold, bold, extrabold)
+  - [x] Line-heights otimizados
+  - [x] Responsividade de texto
 
 #### **Componentes Base**
-- [ ] **Botões Modernos**
-  - [ ] Variantes (primary, secondary, outline, ghost, destructive)
-  - [ ] Estados (hover, active, disabled, loading)
-  - [ ] Micro-interações (transform, shadow)
-  - [ ] Tamanhos (sm, md, lg)
+- [x] **Botões Modernos**
+  - [x] Variantes (primary, secondary, outline, ghost, destructive)
+  - [x] Estados (hover, active, disabled, loading)
+  - [x] Micro-interações (transform, shadow)
+  - [x] Tamanhos (sm, md, lg)
 
-- [ ] **Cards Aprimorados**
-  - [ ] Variantes (default, elevated, outlined, interactive)
-  - [ ] Hover effects
-  - [ ] Shadow depth system
-  - [ ] Border radius consistency
+- [x] **Cards Aprimorados**
+  - [x] Variantes (default, elevated, outlined, interactive)
+  - [x] Hover effects
+  - [x] Shadow depth system
+  - [x] Border radius consistency
 
-- [ ] **Inputs Modernos**
-  - [ ] Floating labels
-  - [ ] Focus states
-  - [ ] Estados de validação
-  - [ ] Loading states
+- [x] **Inputs Modernos**
+  - [x] Floating labels
+  - [x] Focus states
+  - [x] Estados de validação
+  - [x] Loading states
 
 ---
 
@@ -80,6 +80,13 @@ Transformar o dashboard em uma experiência visual moderna, intuitiva e profissi
   - [ ] Animações de hover
   - [ ] Indicador de página ativa
   - [ ] Tooltips informativos
+
+- [ ] **Menu Lateral Minimizado (Mini-rail)**
+  - [ ] Ícones claros e consistentes
+  - [ ] Tooltips ao hover com atalho de teclado
+  - [ ] Destaque do item ativo no estado minimizado
+  - [ ] Estados de foco e navegação por teclado
+  - [ ] Expansão temporária ao hover/click
 
 - [ ] **Footer da Sidebar**
   - [ ] Perfil do usuário

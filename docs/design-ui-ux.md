@@ -1,3 +1,26 @@
+### Tela de Login
+
+#### Objetivos de UX
+- Comunicação clara da identidade JL Construtora (logo, cores, título).
+- Feedback imediato para loading, erro e sucesso.
+- Acessibilidade: navegação por teclado, rótulos e avisos descritivos.
+
+#### Estados
+- Padrão: formulário com e‑mail e senha.
+- Loading: botão com spinner e campos desabilitados.
+- Erro: mensagem em `Alert` e destaque não intrusivo.
+- Sucesso: toast de confirmação e navegação para `/dashboard`.
+
+#### Interações
+- Mostrar/ocultar senha com ícone de alternância.
+- Toasts para feedback (`useToast`).
+- Dica com credenciais de teste no ambiente de desenvolvimento.
+
+#### Acessibilidade
+- `Label` associado a `Input` por `htmlFor`/`id`.
+- Ordem de tabulação natural e foco visível.
+- Texto alternativo/descrições para ícones sem conteúdo textual.
+
 ### Design UI e UX
 
 #### Princípios

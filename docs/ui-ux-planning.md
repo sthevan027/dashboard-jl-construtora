@@ -1,3 +1,17 @@
+## Login e Autenticação (UI/UX)
+
+### Objetivos
+- Minimizar atrito de acesso com feedback claro.
+- Garantir acessibilidade e consistência com o design system.
+
+### Diretrizes
+- Campos com `Label` e `Input` claramente vinculados.
+- Alternância de exibição da senha com ícone e estado de foco visível.
+- Botão com estados: padrão, hover, active, disabled, loading.
+- Mensagens de erro concisas e específicas.
+- Toasts para eventos (sucesso/erro) sem bloquear a navegação.
+- Loading global curto no guard para evitar flashes de layout.
+
 # 🎨 PLANEJAMENTO UI/UX - DASHBOARD JL CONSTRUTORA
 
 ## 📋 VISÃO GERAL

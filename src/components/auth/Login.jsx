@@ -67,37 +67,45 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Email */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700 font-medium">
-                  E-mail
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="seu@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="h-11"
-                  disabled={isLoading}
-                />
+                <div className="relative">
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder=" "
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="h-11 pt-4"
+                    disabled={isLoading}
+                  />
+                  <Label
+                    htmlFor="email"
+                    className="absolute left-3 top-2 text-xs text-gray-600 transition-all duration-200 pointer-events-none peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-gray-500 peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-600"
+                  >
+                    E-mail
+                  </Label>
+                </div>
               </div>
 
               {/* Senha */}
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-700 font-medium">
-                  Senha
-                </Label>
                 <div className="relative">
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
+                    placeholder=" "
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="h-11 pr-10"
+                    className="h-11 pr-10 pt-4"
                     disabled={isLoading}
                   />
+                  <Label
+                    htmlFor="password"
+                    className="absolute left-3 top-2 text-xs text-gray-600 transition-all duration-200 pointer-events-none peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-gray-500 peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-600"
+                  >
+                    Senha
+                  </Label>
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}

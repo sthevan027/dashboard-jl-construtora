@@ -1,3 +1,9 @@
+## Acesso e Permissões (Resumo)
+
+- Relatórios são rotas privadas, protegidas por `AuthGuard`.
+- Usuário precisa estar autenticado; caso contrário, será redirecionado para `/login`.
+- Em evolução futura, filtrar dados conforme papéis (ex.: `admin`, `gestor`).
+
 ### Relatórios
 
 #### Objetivos

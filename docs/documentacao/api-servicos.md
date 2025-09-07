@@ -1,3 +1,23 @@
+### authService
+
+Métodos disponíveis:
+
+- `login(email, password)`
+  - Sucesso: `{ success: true, user, session }`
+  - Erro: lança `Error` com mensagem descritiva
+
+- `logout()`
+  - Limpa a sessão em `localStorage` e retorna `{ success: true }`
+
+- `isAuthenticated()`
+  - Retorna `true` se a sessão existir e não tiver expirado
+
+- `getSession()`
+  - Retorna o objeto de sessão válido ou `null`
+
+- `refreshToken()`
+  - Gera novo token e atualiza `expiresAt` quando houver sessão ativa
+
 ### API de Serviços (Interna)
 
 Os serviços encapsulam a lógica de dados, exportação e autenticação. Mantêm a UI desacoplada e facilitam a troca de fonte de dados (mock → API real).

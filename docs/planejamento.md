@@ -1,3 +1,18 @@
+## Autenticação e Login
+
+### Escopo do MVP
+- Login com credenciais mock e sessão local com expiração (24h).
+- Proteção de rotas via `AuthGuard`.
+
+### Tarefas
+- Implementado: `authService` (login/logout/sessão/refresh).
+- Implementado: `Login.jsx` com feedback de loading/erro e toasts.
+- Implementado: `AuthGuard.jsx` com redirecionamento e loading state.
+
+### Riscos e Evolução
+- Em produção, substituir `localStorage` por cookies `httpOnly` e backend.
+- Adicionar RBAC, expiração curta e rotação de tokens.
+
 dashboard para obra.
 
 Objetivo

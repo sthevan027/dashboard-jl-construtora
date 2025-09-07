@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "./styles/design-tokens.css";
+
+:root {
+  color: var(--color-foreground);
+  background: var(--color-background);
+  font-family: var(--font-sans);
+}
+
+/* Ajustes base */
+html, body, #root { height: 100%; }
+body { margin: 0; }
+
+/* Sistema de Texto (utilitários) */
+.text-display-1 { font-size: var(--text-5xl); line-height: var(--leading-tight); font-weight: var(--font-weight-extrabold); }
+.text-display-2 { font-size: var(--text-4xl); line-height: var(--leading-tight); font-weight: var(--font-weight-bold); }
+.text-title-1 { font-size: var(--text-3xl); line-height: var(--leading-snug); font-weight: var(--font-weight-semibold); }
+.text-title-2 { font-size: var(--text-2xl); line-height: var(--leading-snug); font-weight: var(--font-weight-semibold); }
+.text-heading { font-size: var(--text-xl); line-height: var(--leading-normal); font-weight: var(--font-weight-semibold); }
+.text-subheading { font-size: var(--text-lg); line-height: var(--leading-normal); font-weight: var(--font-weight-medium); }
+.text-body { font-size: var(--text-base); line-height: var(--leading-relaxed); font-weight: var(--font-weight-normal); }
+.text-caption { font-size: var(--text-sm); line-height: var(--leading-normal); font-weight: var(--font-weight-normal); color: var(--color-muted-foreground); }
+
+/* Responsividade básica para títulos */
+@media (max-width: 640px) {
+  .text-display-1 { font-size: var(--text-4xl); }
+  .text-display-2 { font-size: var(--text-3xl); }
+  .text-title-1 { font-size: var(--text-2xl); }
+  .text-title-2 { font-size: var(--text-xl); }
+}
+
+/* Helpers para sombras explícitas */
+.shadow-xs { box-shadow: var(--shadow-xs); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+.shadow-2xl { box-shadow: var(--shadow-2xl); }
+
+

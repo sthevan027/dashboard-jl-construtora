@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/* Design Tokens JL Construtora — Tailwind v4 (@theme) */
+@theme {
+  /* Cores (Light) */
+  --color-background: hsl(220 25% 98%);
+  --color-foreground: hsl(222 47% 11%);
+
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(222 47% 11%);
+
+  /* Primária (Azul Profissional) */
+  --color-primary: hsl(221 83% 53%);
+  --color-primary-foreground: hsl(0 0% 100%);
+
+  /* Secundária (Dourado/Amarelo sutil) */
+  --color-secondary: hsl(45 92% 51%);
+  --color-secondary-foreground: hsl(26 83% 14%);
+
+  /* Estados */
+  --color-muted: hsl(215 16% 92%);
+  --color-muted-foreground: hsl(215 16% 35%);
+
+  --color-accent: hsl(213 94% 68%);
+  --color-accent-foreground: hsl(222 47% 11%);
+
+  --color-destructive: hsl(0 84% 60%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+
+  /* Contornos e inputs */
+  --color-border: hsl(214 32% 91%);
+  --color-input: hsl(214 32% 91%);
+  --color-ring: hsl(221 83% 53%);
+
+  /* Tipografia */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+  /* Texto (escala) — usa os padrões do Tailwind, mas declara explicitamente */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+
+  /* Pesos tipográficos */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Alturas de linha */
+  --leading-tight: 1.15;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  /* Sombras */
+  --shadow-xs: 0 1px 0 rgba(16, 24, 40, 0.04), 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+}
+
+/* Tema Escuro */
+:root.dark {
+  --color-background: hsl(222 47% 7%);
+  --color-foreground: hsl(210 40% 96%);
+
+  --color-card: hsl(224 71% 4%);
+  --color-card-foreground: hsl(210 40% 98%);
+
+  --color-primary: hsl(217 91% 60%);
+  --color-primary-foreground: hsl(0 0% 100%);
+
+  --color-secondary: hsl(45 85% 60%);
+  --color-secondary-foreground: hsl(25 90% 12%);
+
+  --color-muted: hsl(215 16% 22%);
+  --color-muted-foreground: hsl(215 16% 78%);
+
+  --color-accent: hsl(213 94% 68%);
+  --color-accent-foreground: hsl(222 47% 11%);
+
+  --color-destructive: hsl(0 72% 51%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+
+  --color-border: hsl(215 16% 22%);
+  --color-input: hsl(215 16% 22%);
+  --color-ring: hsl(217 91% 60%);
+}
+
+/* Utilitário de gradiente corporativo */
+.bg-brand-gradient {
+  background-image: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(213 94% 68%) 50%, hsl(45 92% 51%) 100%);
+}
+
+
