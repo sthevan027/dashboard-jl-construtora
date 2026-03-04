@@ -1,68 +1,101 @@
-### Dashboard JL Construtora
+# Dashboard JL Construtora
 
-Dashboard corporativo para acompanhamento de KPIs das áreas de RH, Segurança e Obras.
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=000)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat&logo=vite&logoColor=fff)](https://vitejs.dev/)
+[![Tailwind](https://img.shields.io/badge/Tailwind-4-38B2AC?style=flat&logo=tailwind-css&logoColor=fff)](https://tailwindcss.com/)
+[![pnpm](https://img.shields.io/badge/pnpm-10-F69220?style=flat&logo=pnpm&logoColor=fff)](https://pnpm.io/)
 
-- **Stack**: Vite + React 19, Tailwind CSS 4, Radix UI, Recharts, React Router (planejado), lucide-react, zod, react-hook-form, date-fns
-- **Gerenciador de pacotes**: pnpm
+> Dashboard corporativo para acompanhamento de KPIs das áreas de RH, Segurança e Obras.
 
-### Status e andamento
-- [x] Planejamento do MVP-Final (`docs/planejamento.md`)
-- [x] Documentação base (arquitetura, execução, relatórios, configs, auth, design)
-- [x] UI base com `Sidebar` e módulos iniciais (Dashboard, RH, Segurança, Obras)
-- [ ] Relatórios com filtros (período/área), KPIs e séries históricas
-- [ ] Exportação CSV e PDF
-- [ ] Configurações persistentes (metas/limiares/identidade)
-- [ ] Autenticação (login simples + rotas protegidas)
-- [ ] Deploy (Vercel/Netlify) e README final
+---
 
-### Como rodar
+## 📋 Sobre
+
+Dashboard para JL Construtora com módulos de RH, Segurança e Obras, relatórios com filtros, exportação CSV/PDF e configurações personalizáveis.
+
+## 🚀 Como rodar
+
+### Pré-requisitos
+
+- Node.js 18+
+- pnpm
+
+### Instalação
+
 ```bash
-pnpm i
+# Clone o repositório
+git clone https://github.com/sthevan027/dashboard-jl-construtora.git
+cd dashboard-jl-construtora
+
+# Instale as dependências
+pnpm install
+
+# Inicie o servidor de desenvolvimento
 pnpm dev
 ```
-Abrirá em `http://localhost:5173`.
 
-Build e preview:
+Acesse em: **http://localhost:5173**
+
+### Outros comandos
+
 ```bash
-pnpm build
-pnpm preview
+pnpm build    # Build de produção
+pnpm preview  # Visualizar build
+pnpm lint     # Linter
 ```
 
-Lint:
-```bash
-pnpm lint
+## 🛠️ Stack
+
+| Tecnologia | Uso |
+|------------|-----|
+| React 19 | Framework UI |
+| Vite 6 | Build e dev server |
+| Tailwind CSS 4 | Estilização |
+| Radix UI | Componentes |
+| Recharts | Gráficos |
+| React Router | Navegação |
+| Zod + React Hook Form | Formulários |
+| date-fns | Datas |
+
+## 📊 Status do MVP
+
+- [x] Planejamento e documentação
+- [x] UI base com Sidebar e módulos (Dashboard, RH, Segurança, Obras)
+- [ ] Relatórios com filtros e KPIs
+- [ ] Exportação CSV e PDF
+- [ ] Configurações persistentes
+- [ ] Autenticação e rotas protegidas
+- [ ] Deploy (Vercel/Netlify)
+
+## 📁 Estrutura
+
+```
+dashboard-jl-construtora/
+├── src/
+│   ├── App.jsx
+│   ├── main.jsx
+│   ├── components/
+│   │   ├── Sidebar.jsx
+│   │   ├── *Module.jsx
+│   │   └── ui/
+│   ├── data/
+│   └── services/    # planejado
+├── docs/
+├── public/
+├── package.json
+└── README.md
 ```
 
-### Estrutura (resumo)
-- `src/App.jsx`: layout principal e controle da seção ativa
-- `src/components/Sidebar.jsx`: navegação lateral
-- `src/components/*Module.jsx`: módulos de áreas
-- `src/components/ui/*`: componentes UI
-- `src/data/mockData.js`: dados mock
+## 📚 Documentação
 
-Estrutura proposta para o MVP (ver detalhes em `docs/arquitetura.md`):
-- `src/services/`: `kpiService`, `reportService`, `exportService`, `authService`
-- `src/data/`: por domínios (`rh/`, `seguranca/`, `obras/`, `kpis/`)
-- Rotas com `react-router-dom` incluindo `/login` e guard
+- [Planejamento](docs/planejamento.md)
+- [Arquitetura](docs/arquitetura.md)
+- [Execução e Deploy](docs/guia-execucao.md)
+- [Relatórios](docs/relatorios.md)
+- [Configurações](docs/configuracoes.md)
+- [Autenticação](docs/autenticacao.md)
+- [Design UI/UX](docs/design-ui-ux.md)
 
-### Funcionalidades do MVP
-- Relatórios com filtros por período (mês/trimestre/ano) e área (RH/Segurança/Obras)
-- KPIs agregados e comparação vs meta, com badges de alerta
-- Exportação CSV e PDF
-- Configurações com persistência em `localStorage` (metas, limiares, identidade)
-- Autenticação simples e proteção de rotas
+---
 
-### Documentação
-- Planejamento: `docs/planejamento.md`
-- Arquitetura: `docs/arquitetura.md`
-- Execução/Build/Deploy: `docs/guia-execucao.md`
-- Relatórios: `docs/relatorios.md`
-- Configurações: `docs/configuracoes.md`
-- Autenticação: `docs/autenticacao.md`
-- Design UI/UX: `docs/design-ui-ux.md`
-- Bibliotecas e API de serviços: `docs/documentacao/`
-
-### Deploy (previsto)
-- Vercel ou Netlify
-- Comando de build: `pnpm build`
-- Diretório de saída: `dist`
+**Desenvolvido por [Sthevan Santos](https://github.com/sthevan027)**
